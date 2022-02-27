@@ -1,6 +1,7 @@
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
+import Image from "next/image";
 
 const Home = () => {
   return (
@@ -16,6 +17,14 @@ const Home = () => {
 
       <main className={styles.main}>
         <Banner handleClick={() => undefined} buttonText="View stores nearby" />
+        <div className={styles.heroImage}>
+          <Image
+            src="/static/hero-image.png"
+            width={700}
+            height={400}
+            alt="hero-image"
+          />
+        </div>
       </main>
     </div>
   );
