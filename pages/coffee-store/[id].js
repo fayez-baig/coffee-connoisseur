@@ -3,10 +3,16 @@ import Head from "next/head";
 import Link from "next/link";
 import cls from "classnames";
 
-import coffeeStores from "../../data/coffee-stores.json";
+import { fetchCoffeeStores } from "../index";
 import styles from "../../styles/coffee-store.module.css";
 
-const CoffeeStore = ({ data: { name, address, neighbourhood, imgUrl } }) => {
+const CoffeeStore = ({
+  data: {
+    name,
+    location: { address, neighborhood },
+    imgUrl,
+  },
+}) => {
   const handleUpvoteButton = () => console.log("handleUpvoteButton");
   return (
     <>
@@ -26,7 +32,10 @@ const CoffeeStore = ({ data: { name, address, neighbourhood, imgUrl } }) => {
               <h1 className={styles.name}>{name}</h1>
             </div>
             <Image
-              src={imgUrl}
+              src={
+                imgUrl ||
+                "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
+              }
               width={600}
               height={360}
               className={styles.storeImg}
@@ -44,7 +53,7 @@ const CoffeeStore = ({ data: { name, address, neighbourhood, imgUrl } }) => {
               />
               <p className={styles.text}>{address}</p>
             </div>
-            {neighbourhood && (
+            {neighborhood && (
               <div className={styles.iconWrapper}>
                 <Image
                   src="/static/icons/nearMe.svg"
@@ -52,7 +61,7 @@ const CoffeeStore = ({ data: { name, address, neighbourhood, imgUrl } }) => {
                   height="24"
                   alt="near me icon"
                 />
-                <p className={styles.text}>{neighbourhood}</p>
+                <p className={styles.text}>{neighborhood}</p>
               </div>
             )}
             <div className={styles.iconWrapper}>
@@ -80,22 +89,22 @@ const CoffeeStore = ({ data: { name, address, neighbourhood, imgUrl } }) => {
 
 export default CoffeeStore;
 
-export const getStaticProps = ({ params: { id } }) => {
+export const getStaticProps = async ({ params: { id } }) => {
+  const data = await fetchCoffeeStores();
   return {
     props: {
-      data: coffeeStores.find(
-        (coffeeStore) => coffeeStore.id.toString() === id
-      ),
+      data: data.find((coffeeStore) => coffeeStore.fsq_id.toString() === id),
     },
   };
 };
 
-export const getStaticPaths = () => {
-  const pathsArr = coffeeStores.map(({ id }) => ({
-    params: { id: id.toString() },
+export const getStaticPaths = async () => {
+  const data = await fetchCoffeeStores();
+  const pathsArr = data.map(({ fsq_id }) => ({
+    params: { id: fsq_id.toString() },
   }));
   return {
     paths: pathsArr,
-    fallback: true,
+    fallback: false,
   };
 };
