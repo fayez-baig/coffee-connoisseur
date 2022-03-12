@@ -2,6 +2,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import Image from "next/image";
+import Card from "../components/Card";
 
 const Home = () => {
   return (
@@ -25,6 +26,11 @@ const Home = () => {
             alt="hero-image"
           />
         </div>
+        <Card
+          name="Dark horse coffee"
+          imgUrl="/static/hero-image.png"
+          href="/coffee-store/dark-horse-coffee"
+        />
       </main>
     </div>
   );
