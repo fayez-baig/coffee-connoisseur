@@ -3,9 +3,9 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import Image from "next/image";
 import Card from "../components/Card";
-import data from "../data/coffee-stores.json";
+import coffeeStores from "../data/coffee-stores.json";
 
-const Home = () => {
+const Home = ({ data }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -43,3 +43,11 @@ const Home = () => {
 };
 
 export default Home;
+
+export const getStaticProps = async (context) => {
+  return {
+    props: {
+      data: coffeeStores,
+    },
+  };
+};
