@@ -27,16 +27,21 @@ const Home = ({ data }) => {
             alt="hero-image"
           />
         </div>
-        <div className={styles.cardLayout}>
-          {data.map(({ name, imgUrl, id }) => (
-            <Card
-              key={id}
-              name={name}
-              imgUrl={imgUrl}
-              href={`/coffee-store/${id}`}
-            />
-          ))}
-        </div>
+        {data && (
+          <>
+            <h2 className={styles.heading2}>Tornoto coffee stores</h2>
+            <div className={styles.cardLayout}>
+              {data.map(({ name, imgUrl, id }) => (
+                <Card
+                  key={id}
+                  name={name}
+                  imgUrl={imgUrl}
+                  href={`/coffee-store/${id}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
@@ -44,7 +49,7 @@ const Home = ({ data }) => {
 
 export default Home;
 
-export const getStaticProps = async (context) => {
+export const getStaticProps = () => {
   return {
     props: {
       data: coffeeStores,
