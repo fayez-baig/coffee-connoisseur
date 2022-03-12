@@ -3,6 +3,7 @@ import styles from "../styles/Home.module.css";
 import Banner from "../components/Banner";
 import Image from "next/image";
 import Card from "../components/Card";
+import data from "../coffee-stores.json";
 
 const Home = () => {
   return (
@@ -26,11 +27,16 @@ const Home = () => {
             alt="hero-image"
           />
         </div>
-        <Card
-          name="Dark horse coffee"
-          imgUrl="/static/hero-image.png"
-          href="/coffee-store/dark-horse-coffee"
-        />
+        <div className={styles.cardLayout}>
+          {data.map(({ name, imgUrl, id }) => (
+            <Card
+              key={id}
+              name={name}
+              imgUrl={imgUrl}
+              href={`/coffee-store/${id}`}
+            />
+          ))}
+        </div>
       </main>
     </div>
   );
