@@ -1,19 +1,42 @@
+import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import Link from "next/link";
 import cls from "classnames";
 
 import { fetchCoffeeStores } from "../index";
+import { StoreContext } from "../../store/store-context";
 import styles from "../../styles/coffee-store.module.css";
 
-const CoffeeStore = ({
-  data: {
+const CoffeeStore = ({ data }) => {
+  const [coffeeStore, setCoffeeStore] = useState(data);
+
+  const {
     name,
     location: { address, neighborhood },
     imgUrl,
-  },
-}) => {
+  } = coffeeStore;
+
+  const {
+    query: { id },
+  } = useRouter();
+
+  const {
+    state: { coffeeStores },
+  } = useContext(StoreContext);
+
+  useEffect(() => {
+    if (!data.name.length) {
+      const coffeeStoreById = coffeeStores.find(
+        (coffeeStore) => coffeeStore.fsq_id.toString() === id
+      );
+      setCoffeeStore(coffeeStoreById);
+    }
+  }, [id]);
+
   const handleUpvoteButton = () => console.log("handleUpvoteButton");
+
   return (
     <>
       <div className={styles.layout}>
@@ -91,9 +114,18 @@ export default CoffeeStore;
 
 export const getStaticProps = async ({ params: { id } }) => {
   const data = await fetchCoffeeStores();
+  const coffeeStoreById = data.find(
+    (coffeeStore) => coffeeStore.fsq_id.toString() === id
+  );
   return {
     props: {
-      data: data.find((coffeeStore) => coffeeStore.fsq_id.toString() === id),
+      data: coffeeStoreById
+        ? coffeeStoreById
+        : {
+            name: "",
+            location: { address: "", neighborhood: "" },
+            imgUrl: "",
+          },
     },
   };
 };
@@ -105,6 +137,6 @@ export const getStaticPaths = async () => {
   }));
   return {
     paths: pathsArr,
-    fallback: false,
+    fallback: true,
   };
 };
