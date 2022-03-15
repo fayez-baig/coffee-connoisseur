@@ -7,7 +7,7 @@ import Card from "../components/Card";
 import UseTrackLocation from "../hooks/use-track-location";
 import { ACTION_TYPES, StoreContext } from "../store/store-context";
 import { fetchCoffeeStores } from "../queries";
-import { fetchData } from "../utils";
+import { fetcher } from "../utils";
 import styles from "../styles/Home.module.css";
 const Home = ({ data }) => {
   const [coffeeStoresErrorMsg, setCoffeeStoresErrorMsg] = useState("");
@@ -24,7 +24,7 @@ const Home = ({ data }) => {
     const setCoffeeStoresByLocation = async () => {
       if (latLong) {
         try {
-          const coffeeStores = await fetchData(
+          const coffeeStores = await fetcher(
             `api/getCoffeeStoreByLocation?latLong=${latLong}&limit=30`
           );
           dispatch({

@@ -6,7 +6,6 @@ const getCoffeeStoreByLocation = async (request, response) => {
     const res = await fetchCoffeeStores(latLong, limit);
     response.status(200).json(res);
   } catch (error) {
-    console.log(error);
     response.status(500).json(error);
   }
 };
