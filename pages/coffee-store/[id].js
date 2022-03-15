@@ -77,28 +77,24 @@ const CoffeeStore = ({ data }) => {
   };
 
   const handleUpvoteButton = async () => {
-    let count = votingCount + 1;
-    setVotingCount(count);
-    // try {
-    //   const response = await fetch("/api/favouriteCoffeeStoreById", {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       id,
-    //     }),
-    //   });
-
-    //   const dbCoffeeStore = await response.json();
-
-    //   if (dbCoffeeStore && dbCoffeeStore.length > 0) {
-    //     let count = votingCount + 1;
-    //     setVotingCount(count);
-    //   }
-    // } catch (err) {
-    //   console.error("Error upvoting the coffee store", err);
-    // }
+    try {
+      const response = await fetch("/api/favouriteCoffeeStoreById", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+      const dbCoffeeStore = await response.json();
+      if (dbCoffeeStore && dbCoffeeStore.length > 0) {
+        let count = votingCount + 1;
+        setVotingCount(count);
+      }
+    } catch (err) {
+      console.error("Error upvoting the coffee store", err);
+    }
   };
 
   useEffect(() => {
